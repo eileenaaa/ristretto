@@ -33,7 +33,7 @@ import (
 
 var (
 	// TODO: find the optimal value for this or make it configurable
-	setBufSize = 32 * 1024
+	setBufSize = 256
 )
 
 const itemSize = int64(unsafe.Sizeof(storeItem[any]{}))
