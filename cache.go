@@ -366,7 +366,7 @@ func (c *Cache[K, V]) SetWithTTL(key K, value V, cost int64, ttl time.Duration) 
 	}
 	//force fail
 	count := c.setCount.Add(1)
-	if count > 10 {
+	if count > 20 {
 		return false
 	}
 	// Attempt to send item to cachePolicy.
