@@ -84,7 +84,8 @@ type Cache[K Key, V any] struct {
 	cleanupTicker *time.Ticker
 	// Metrics contains a running log of important statistics like hits, misses,
 	// and dropped items.
-	Metrics *Metrics
+	Metrics  *Metrics
+	setCount atomic.Int64
 }
 
 // Config is passed to NewCache for creating new Cache instances.
@@ -362,6 +363,11 @@ func (c *Cache[K, V]) SetWithTTL(key K, value V, cost int64, ttl time.Duration) 
 	if prev, ok := c.storedItems.Update(i); ok {
 		c.onExit(prev)
 		i.flag = itemUpdate
+	}
+	//force fail
+	count := c.setCount.Add(1)
+	if count > 10 {
+		return false
 	}
 	// Attempt to send item to cachePolicy.
 	select {
