@@ -364,11 +364,11 @@ func (c *Cache[K, V]) SetWithTTL(key K, value V, cost int64, ttl time.Duration) 
 		c.onExit(prev)
 		i.flag = itemUpdate
 	}
-	//force fail
-	count := c.setCount.Add(1)
-	if count > 2 {
-		return false
-	}
+	// //force fail
+	// count := c.setCount.Add(1)
+	// if count > 2 {
+	// 	return false
+	// }
 	// Attempt to send item to cachePolicy.
 	select {
 	case c.setBuf <- i:
